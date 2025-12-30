@@ -21,21 +21,24 @@ def generate_animals_string(animals):
         output += '<li class="cards__item">\n'
 
         if "name" in animal:
-            output += f"Name: {animal['name']}<br/>\n"
+            output += f'  <div class="card__title">{animal["name"]}</div>\n'
+
+        output += '  <p class="card__text">\n'
 
         characteristics = animal.get("characteristics", {})
 
         if "diet" in characteristics:
-            output += f"Diet: {characteristics['diet']}<br/>\n"
+            output += f'    <strong>Diet:</strong> {characteristics["diet"]}<br/>\n'
 
         locations = animal.get("locations", [])
         if locations:
-            output += f"Location: {locations[0]}<br/>\n"
+            output += f'    <strong>Location:</strong> {locations[0]}<br/>\n'
 
         if "type" in characteristics:
-            output += f"Type: {characteristics['type']}<br/>\n"
+            output += f'    <strong>Type:</strong> {characteristics["type"]}<br/>\n'
 
-        output += "</li>\n"
+        output += '  </p>\n'
+        output += '</li>\n'
 
     return output
 
