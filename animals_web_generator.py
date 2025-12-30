@@ -2,7 +2,7 @@ import json
 
 
 def load_data(file_path):
-  """ Loads a JSON file """
+  """Loads a JSON file"""
   with open(file_path, "r", encoding="utf-8") as file:
     return json.load(file)
 
@@ -13,32 +13,39 @@ def load_template(file_path):
         return file.read()
 
 
+def serialize_animal(animal):
+    """Serialize a single animal dictionary into an HTML list item."""
+    output = '<li class="cards__item">\n'
+
+    if "name" in animal:
+        output += f'  <div class="card__title">{animal["name"]}</div>\n'
+
+    output += '  <p class="card__text">\n'
+
+    characteristics = animal.get("characteristics", {})
+
+    if "diet" in characteristics:
+        output += f'    <strong>Diet:</strong> {characteristics["diet"]}<br/>\n'
+
+    locations = animal.get("locations", [])
+    if locations:
+        output += f'    <strong>Location:</strong> {locations[0]}<br/>\n'
+
+    if "type" in characteristics:
+        output += f'    <strong>Type:</strong> {characteristics["type"]}<br/>\n'
+
+    output += '  </p>\n'
+    output += '</li>\n'
+
+    return output
+
+
 def generate_animals_string(animals):
-    """Generates the string with the animal data"""
+    """Generate HTML list items for all animals."""
     output = ""
 
     for animal in animals:
-        output += '<li class="cards__item">\n'
-
-        if "name" in animal:
-            output += f'  <div class="card__title">{animal["name"]}</div>\n'
-
-        output += '  <p class="card__text">\n'
-
-        characteristics = animal.get("characteristics", {})
-
-        if "diet" in characteristics:
-            output += f'    <strong>Diet:</strong> {characteristics["diet"]}<br/>\n'
-
-        locations = animal.get("locations", [])
-        if locations:
-            output += f'    <strong>Location:</strong> {locations[0]}<br/>\n'
-
-        if "type" in characteristics:
-            output += f'    <strong>Type:</strong> {characteristics["type"]}<br/>\n'
-
-        output += '  </p>\n'
-        output += '</li>\n'
+        output += serialize_animal(animal)
 
     return output
 
@@ -50,6 +57,7 @@ def write_html_file(file_path, content):
 
 
 def main():
+    """Main entry point: generate animals.html from JSON data."""
     animals = load_data("data/animals_data.json")
     template = load_template("templates/animals_template.html")
 
